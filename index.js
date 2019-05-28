@@ -47,6 +47,22 @@ server.delete('/hubs/:id', (req, res) => {
     })
 })
 
+server.put('/hubs/:id', (req, res) => {
+    const { id } = req.params;
+    const changes = req.body;
+
+    db.update(id, changes).then(updated => {
+        if(updated){
+            res.status(200).json(updated)
+        } else {
+            res.status(404).json({ message: "hub not found" })
+        }
+    })
+    .catch(error => {
+        res.status(500).json({ message: 'error updating hub' })
+    })
+})
+
 server.listen(4000, () => {
     console.log('\n*** API up and running on port 4k ***\n')
 })
